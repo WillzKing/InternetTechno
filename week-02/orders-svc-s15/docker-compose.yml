@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  orders-svc-s15:
+    build: .
+    container_name: orders-svc-s15
+    ports:
+      - "8122:8122"
+    restart: unless-stopped

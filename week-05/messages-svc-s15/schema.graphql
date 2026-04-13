@@ -1,0 +1,15 @@
+type Message {
+  id: Int!
+  name: String!
+  topic: String!
+  createdAt: String!
+}
+
+type Query {
+  messages: [Message!]!
+  message(id: Int!): Message
+}
+
+type Mutation {
+  createMessage(name: String!, topic: String!): Message!
+}

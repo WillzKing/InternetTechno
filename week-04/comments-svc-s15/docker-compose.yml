@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  comments-svc-s15:
+    build: .
+    container_name: comments-svc-s15
+    ports:
+      - "8118:8118"
+    restart: unless-stopped
