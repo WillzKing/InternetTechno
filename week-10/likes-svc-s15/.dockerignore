@@ -1,0 +1,17 @@
+.git
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv
+venv
+env
+.env
+.vscode
+.idea
+*.log
+*.sqlite3
+.DS_Store
+report.md
+variant.json

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipments-app
+  labels:
+    app: shipments-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shipments-app
+  template:
+    metadata:
+      labels:
+        app: shipments-app
+    spec:
+      containers:
+        - name: shipments-container
+          image: shipments-svc-s15:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8270
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8270
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8270
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3

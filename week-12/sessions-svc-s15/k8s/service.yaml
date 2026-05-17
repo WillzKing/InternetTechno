@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipments-svc-s15
+  labels:
+    app: shipments-app
+spec:
+  selector:
+    app: shipments-app
+  ports:
+    - protocol: TCP
+      port: 8270
+      targetPort: 8270
+  type: ClusterIP

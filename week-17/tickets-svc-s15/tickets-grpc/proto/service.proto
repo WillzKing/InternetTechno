@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package tickets.v1;
+
+service TicketsService {
+    rpc CreateTicket (CreateTicketRequest) returns (TicketResponse);
+    rpc GetTicket (GetTicketRequest) returns (TicketResponse);
+    rpc ListTickets (ListTicketsRequest) returns (ListTicketsResponse);
+    rpc SubscribeTickets (SubscribeRequest) returns (stream TicketResponse);
+}
+
+message CreateTicketRequest {
+    string name = 1;
+    string status = 2;
+}
+
+message GetTicketRequest {
+    int32 id = 1;
+}
+
+message ListTicketsRequest {}
+
+message SubscribeRequest {}
+
+message TicketResponse {
+    int32 id = 1;
+    string name = 2;
+    string status = 3;
+    string created_at = 4;
+}
+
+message ListTicketsResponse {
+    repeated TicketResponse tickets = 1;
+}

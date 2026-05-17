@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  logs-svc-s15:
+    build: .
+    container_name: logs-svc-s15
+    ports:
+      - "8139:8139"
+    restart: unless-stopped

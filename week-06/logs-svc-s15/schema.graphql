@@ -1,0 +1,15 @@
+type Log {
+  id: Int!
+  name: String!
+  level: String!
+  createdAt: String!
+}
+
+type Query {
+  logs: [Log!]!
+  log(id: Int!): Log
+}
+
+type Mutation {
+  createLog(name: String!, level: String!): Log!
+}

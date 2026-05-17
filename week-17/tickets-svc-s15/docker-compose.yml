@@ -1,0 +1,37 @@
+services:
+  tickets-grpc:
+    build: ./tickets-grpc
+    container_name: tickets-grpc
+    ports:
+      - "50051:50051"
+    restart: unless-stopped
+    networks:
+      - tickets-network
+
+  tickets-api:
+    build: ./tickets-api
+    container_name: tickets-api
+    ports:
+      - "8144:8144"
+    depends_on:
+      - tickets-grpc
+    restart: unless-stopped
+    networks:
+      - tickets-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: tickets-gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - tickets-api
+    restart: unless-stopped
+    networks:
+      - tickets-network
+
+networks:
+  tickets-network:
+    driver: bridge
