@@ -102,3 +102,37 @@ All services run in Docker containers:
 3. tickets-api validates input and forwards to tickets-grpc via gRPC
 4. tickets-grpc processes and stores data
 5. Response flows back: gRPC -> REST -> Nginx -> Client
+
+## Zero Downtime Deployment
+
+### Strategy
+
+The system uses **rolling update** strategy with Docker Compose:
+
+- **start-first** order: new container starts and passes health check before old one stops
+- **healthcheck** on all services ensures only healthy containers receive traffic
+- **failure_action: rollback** automatically reverts to previous version if health check fails
+- **parallelism: 1** ensures only one container updates at a time
+
+### Update Process
+
+1. Build new image: `docker-compose build`
+2. Rolling update: `docker-compose up -d`
+3. Docker starts new container
+4. Health check runs on new container
+5. Only after health check passes, old container stops
+6. Nginx continues routing traffic to healthy instances
+
+### Rollback
+
+If health check fails:
+- New container is automatically stopped
+- Old container remains running
+- Traffic continues without interruption
+- Operator can investigate logs: `docker logs container-name`
+
+### Load Balancing
+
+Nginx acts as reverse proxy with automatic failover:
+- If one API instance fails health check, Nginx routes to healthy instances
+- `restart: unless-stopped` ensures crashed containers are automatically restarted
